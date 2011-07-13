@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<JaxcentConfiguration>
+    <Page>
+        <PagePath>/index.html</PagePath>
+        <PageClass>toshomalFrontend.MainPage</PageClass>
+        <AutoSessionData>true</AutoSessionData>
+    </Page>
+</JaxcentConfiguration>

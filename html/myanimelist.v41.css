@@ -1,0 +1,996 @@
+body 
+{
+	margin: 0;
+	text-align: center;
+	font-family: Verdana, Arial;
+	font-size: 11px;
+	background-color: #ffffff;
+	/*background: transparent url(http://cdn.myanimelist.net/images/bgs/mal-bg-4.jpg) no-repeat scroll center top;*/
+}
+
+#myanimelist
+{
+	width: 970px;
+	margin-top: 0;
+	margin-bottom: 0;
+	margin-right: auto;
+	margin-left: auto;
+	text-align: left;
+	position: relative;
+}
+
+#header {
+	height: 156px;
+}
+
+#header a {
+	text-indent: -5000em;
+	width: 500px;
+	height: 156px;
+	display: block;
+}
+
+#headerSmall {
+	height: 55px;
+	background: transparent url(http://cdn.myanimelist.net/images/mal-logo-small.jpg) no-repeat
+}
+
+#headerSmall a {
+	text-indent: -5000em;
+	width: 400px;
+	height: 50px;
+	display: block;
+}
+
+#menu
+{
+	height: 34px;
+	width: 970px;
+	background-color: #2e51a2;
+}
+
+#menu_left
+{
+	float: left;
+	width: 620px;
+	background: #2e51a2;
+}
+
+#menu_right
+{
+	height: 34px;
+	width: 345px;
+	float: right;
+	text-align: right;
+	vertical-align: bottom;
+	color: #2e51a2;
+}
+
+#contentWrapper {
+	position: relative;
+}
+
+#roadblock {
+	padding: 3px;
+	border-width: 0 1px 0 1px;
+	border-style: solid;
+	border-color: #ebebeb;
+}
+
+#homeAds {
+	padding: 3px;
+	position: relative;
+}
+
+.hoverinfo
+{
+	display: none; 
+	position: absolute; 
+	background-image:url(http://cdn.myanimelist.net/images/getinfo_topleft.png);
+	background-repeat:no-repeat;
+	width: 392px;
+	height: 279px;
+}
+
+.hovertitle,  .hovertitle a, .hovertitle a:visited, .hovertitle a:hover, .hovertitle a:active
+{
+	color: #fff !important;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+.hoverinfo_ie6
+{
+	display: none; 
+	position: absolute; 
+	background-image:url(http://cdn.myanimelist.net/images/getinfo_topleft.gif);
+	background-repeat:no-repeat;
+	width: 392px;
+	height: 279px;
+}
+
+img
+{
+	border: 0;
+}
+
+td
+{
+	font-size: 11px;
+	line-height: 1.5em;
+}	
+	
+a,a:visited
+{
+    color: #1d439b;
+    text-decoration: none;
+}
+
+a:hover
+{
+    color: #1d439b;
+    text-decoration: underline;
+}
+
+.link1
+{
+	color: #4b751c;
+	font-weight: bold;
+}
+
+.link2
+{
+	color: #6a6a6a;
+	font-weight: bold;
+}
+
+/**
+Nav
+*/
+
+/* remove the list style */
+#nav {
+	margin:0; 
+	padding:0; 
+	list-style:none;
+}	
+	
+#nav li {
+	float:left; 
+	display:block; 
+	width:100px; 
+	background:#E1E7F5; 
+	position:relative;
+	z-index: 90;
+	text-indent: 5px;
+}
+	
+/* this is the parent menu */
+#nav li a {
+	display: block; 
+	padding: 10px 5px 0 5px;
+	font-size: 13px; 
+	font-weight: bold;
+	height: 24px; 
+	text-decoration: none; 
+	text-align: left; 
+	color: #ffffff;
+	background: #2e51a2;
+}
+
+#nav li a:hover, #nav li.hover a {
+	color: #000000;
+	background: #E1E7F5;
+}
+
+
+/* submenu */
+#nav ul {
+	position: absolute; 
+	left: 0; 
+	display: none; 
+	padding: 0; 
+	list-style: none;
+}
+
+#nav ul li {
+	width: 105px; 
+	float: left; 
+}
+
+#nav ul a {
+	font-size: 11px;
+	background: #E1E7F5;
+	display: block;  
+	height: 15px;
+	padding: 8px 5px; 
+	color: #000000;
+	font-weight: normal;
+}
+
+#nav ul a:hover {
+	text-decoration: none;	
+	background: #2e51a2;
+	color: #ffffff;
+}
+
+/**
+nav specifics
+*/
+
+#nav li.tiny {
+	width: 50px;
+}
+
+#nav li.smaller {
+	width: 60px;
+}
+
+#nav li.small {
+	width: 70px;
+}
+
+#nav li.medium {
+	width: 90px;
+}
+
+#nav li.large {
+	width: 97px;
+}
+
+#nav .wide li {
+	width: 110px;
+}
+
+#nav .wider li {
+	width: 130px;
+}
+
+#nav li a span.count {
+	color: #aaa;
+}
+
+#nav li span {
+	margin: 0;
+	padding: 0;
+	/* IE crap */
+	line-height: 1.2em;
+}
+
+#nav li .edit a {
+	padding-right: 10px;
+	font-size: 9px;
+	float: right;
+}
+
+#nav li .new a {
+	padding-right: 10px;
+	font-size: 9px;
+	float: right;
+	color: #777;
+}
+
+#nav li .new a:hover {
+	color: #ffffff;
+}
+
+/* fix ie6 small issue */
+/* we should always avoid using hack like this */
+/* should put it into separate file : ) */
+*html #nav ul {
+	margin: 0;
+}
+
+/* end nav */
+
+
+#header_nonav
+{
+	height: 34px;
+	width: 100%;
+	background: #2e51a2 url(http://cdn.myanimelist.net/images/mal-logo.gif) no-repeat top left;
+}
+
+#searchBar {
+	padding-top: 6px;
+	padding-right: 5px;
+}
+
+#content {
+	border-width: 0 1px 1px 1px;
+	border-color: #EBEBEB;
+	border-style: solid;
+	padding: 5px 10px 10px 10px;
+	background-color: #ffffff;
+	position: relative;
+}
+
+#contentHome {
+	border-width: 0 1px 1px 1px;
+	border-color: #EBEBEB;
+	border-style: solid;
+	padding: 5px 0 10px 0;
+	background-color: #ffffff;
+	position: relative;
+}
+
+#login
+{
+	padding: 5px;
+}
+
+#rightbody
+{
+	width: 808px; 
+	font-size: 11px;
+	float: left;
+    text-align: left;
+	background: #ffffff;
+}
+
+/* IE stuff */
+* html #rightbody
+{
+	text-align: left;
+	float: right;
+	clear: both;
+	overflow: hidden;
+	background: #ffffff;
+}
+
+
+#rightcontent
+{
+	width: 792px;
+	font-family: Verdana, Arial;
+	font-size: 11px;
+	padding: 7px;
+	border-left: solid 1px #ebebeb;
+    border-right: solid 1px #ebebeb;
+	border-bottom: solid 1px #1d439b;
+}
+
+#rightcontent_nopad
+{
+	width: 806px;
+	font-family: Verdana, Arial;
+	font-size: 11px;
+	padding-top: 5px;
+	border-left: solid 1px #ebebeb;
+    border-right: solid 1px #ebebeb;
+	border-bottom: solid 1px #1d439b;
+}
+
+#rightcontent_nopadall
+{
+	width: 806px;
+	font-family: Verdana, Arial;
+	font-size: 11px;
+	padding: 0;
+	border-left: solid 1px #ebebeb;
+    border-right: solid 1px #ebebeb;
+	border-bottom: solid 1px #1d439b;
+}
+
+#rightcontent_largepad
+{
+	width: 766px;
+	font-family: Verdana, Arial;
+	font-size: 11px;
+	padding: 7px 20px 7px 20px;
+	border-left: solid 1px #ebebeb;
+    border-right: solid 1px #ebebeb;
+	border-bottom: solid 1px #1d439b;
+}
+
+/* MORE IE CRAP */
+* html #rightcontent
+{
+	width: 792px;
+}
+
+#rightcontentunder
+{
+	font-family: Verdana, Arial;
+	font-size: 11px;
+	padding: 10px;
+	text-align: center;
+}
+
+.inputButton
+{
+	border-style: solid;
+	border-top-width: 1px;
+	border-left-width: 1px;
+	border-bottom-width: 1px;
+	border-right-width: 1px;
+	border-top-color: #6c8cd8;
+	border-left-color: #6c8cd8;
+	border-bottom-color: #2e51a2;
+	border-right-color: #2e51a2;
+	background-color: #4165ba;
+	color: #FFFFFF;
+	font-size: 11px;
+	padding: 1px;
+	font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
+}
+
+.inputtext
+{
+	padding: 2px;
+	border-width: 1px;
+	border-color: #d8d8d8;
+	border-width: 1px;
+	border-style: solid;
+	font-size: 11px;
+	font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
+}
+
+.textarea
+{
+	padding: 2px;
+	border-width: 1px;
+	border-color: #d8d8d8;
+	border-width: 1px;
+	border-style: solid;
+	font-size: 11px;
+	font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
+}
+
+
+.light_bg
+{
+	background-color: #e4f7cd;
+	border-width: 1px 0px;
+	border-style: solid;
+	border-color: #d0e9b1;
+	padding: 5px;
+}
+
+.normal_header
+{
+	font-weight: bold;
+	font-size: 12px;
+	margin-top: 4px;
+	margin-bottom: 5px;
+	border-width: 0px 0px 1px 0px;
+	border-color: #bebebe;
+	border-style: solid;
+	color: #000000;
+	padding: 3px 0px;
+}
+
+h2
+{
+	font-weight: bold;
+	font-size: 12px;
+	border-width: 0px 0px 1px 0px;
+	border-color: #bebebe;
+	border-style: solid;
+	color: #000000;
+	padding: 3px 0px;
+	margin: 4px 0 5px 0;
+}
+
+h1
+{
+	font-family: Verdana, Arial;
+	text-align: left;
+	background-color: #e1e7f5;
+	color: #000000;
+	font-size: 16px;
+	font-weight: bold;
+	border-width: 1px 1px 1px 1px;
+	border-style: solid;
+	border-bottom-color: #1d439b;
+	border-left-color: #ebebeb;
+	border-right-color: #ebebeb;
+	border-top-color: #ebebeb;
+	padding: 5px 9px;
+	margin: 0;
+}
+
+.goodresult, .successQuery
+{
+	margin: 10px;
+	padding: 10px;
+	text-align: center;
+	background-color: #e1e7f5;
+	border-color: #1d439b;
+	border-width: 2px;
+	border-style: solid;
+}
+
+.goodresult a:link,.goodresult a:active,.goodresult a:visited
+{
+	color: #1d439b;
+}
+
+.badresult
+{
+	margin: 10px;
+	padding: 10px;
+	text-align: center;
+	background-color: #fae3e3;
+	border-color: #b25959;
+	border-width: 2px;
+	border-style: solid;
+}
+
+.badresult a:link,.badresult a:active,.badresult a:visited
+{
+	color: #b25959;
+}
+
+
+.td1
+{
+	color: #000000;
+	border-width: 0px;
+	border-style: solid;
+	border-color: #000000;
+	padding: 3px;
+	background-color: #EBEBEB; 
+}
+
+.td2
+{
+	color: #000000;
+	border-width: 0;
+	border-style: solid;
+	border-color: #000000;
+	padding: 3px;
+	background-color: #ffffff; 
+}
+
+.borderClass
+{
+	border-style: solid;
+	border-color: #ebebeb;
+	border-width: 0 0 1px 0;
+	padding: 3px;
+}
+
+.borderLight {
+	border-style: solid;
+	border-color: #ebebeb;
+	border-width: 0 0 1px 0;
+}
+
+.borderDark {
+	border-style: solid;
+	border-color: #cdcdcd;
+	border-width: 0 0 1px 0;
+}
+
+/*
+New Multi-page Nav
+*/
+
+#horiznav_nav
+{
+	padding: 0 8px 4px 8px;
+	margin-bottom: 8px;
+	margin-top: 15px;
+	border-width: 0px 0px 1px 0px;
+	border-color: #1d439b;
+	border-style: solid;
+	line-height: 1.4em;
+}
+
+#horiznav_nav ul
+{
+	display: inline;
+	margin-top: 0;
+	padding-left: 0;
+	margin-left: 0;
+	font-family: arial, helvetica, sans-serif;
+}
+
+#horiznav_nav ul li 
+{
+	margin: 0;
+	padding: 0px;
+	height: 16px;
+	display: inline;
+	background-color: #fff;
+}
+
+#horiznav_nav ul li a
+{
+	padding: 0.4em;
+	background-color: #fff;
+	color: #1d439b;
+	text-decoration: none;
+	font-family: Arial, Verdana;
+	font-weight: normal;
+}
+
+#horiznav_nav ul li a:hover
+{
+	background-color: #1d439b;
+	color: #fff;
+}
+
+#horiznav_nav ul li .horiznav_active
+{
+	background-color: #1d439b;
+	color: #fff;
+}
+
+#profileRows
+{
+	margin: 0px;
+	padding: 10px 0px;
+}
+  
+#profileRows a
+{
+	margin: 0px;
+  	padding: 10px 0px;
+	color: #1d439b;
+	text-decoration: none;
+	margin: 0px;
+	padding: 2px 3px;
+    display: block;
+	
+	border-color: #92b0f1;
+	border-style: solid;
+	border-width: 0px 0px 1px 0px;
+}
+
+
+#profileRows a:hover
+{
+	text-decoration: none;
+	color: #ffffff;
+	margin: 0px;
+	padding: 2px 3px;
+    display: block;
+	background-color: #1d439b;
+	border-color: #6386d5;
+	border-style: solid;
+	border-width: 0px 0px 1px 0px;
+	text-decoration: none;
+}
+
+.alignCenter
+{
+	text-align: center;
+}
+
+.profile_leftcell
+{
+border-width: 0px 1px 0px 0px;
+border-color: #ebebeb;
+border-style: solid;
+}
+
+.bgbdrContainer
+{
+	background-color: #f6f6f6;
+	border: 1px solid #ebebeb;
+	padding: 5px;
+}
+
+.bgColor1
+{
+	background-color: #f6f6f6;
+}
+
+.bgColor2
+{
+	background-color: #ffffff;
+}
+
+.lightLink, .lightLink:link, .lightLink:visited, .lightLink:active
+{
+	color: #888888;
+}
+
+
+.colored_text
+{
+	color: #1d439b;
+}
+
+.dark_text, .dark_text:hover,.dark_text:visited
+{
+	color: #444444;
+	font-weight: bold;
+}
+
+
+.dark_text_normal, .dark_text_normal:hover,.dark_text_normal:visited
+{
+	color: #444444;
+	font-weight: normal;
+}
+
+.row_highlighted
+{
+	background-color: #e1e7f5;
+	border-width: 0 0 1px 0;
+	border-style: solid;
+	border-color: #ebebeb;
+	padding: 5px;
+}
+
+.row_not_highlighted
+{
+	padding: 5px;
+	background-color: #ffffff;
+	border-width: 0 0 1px 0;
+	border-style: solid;
+	border-color: #ebebeb;
+}
+
+.rowNoColor
+{
+	background-color: #ffffff;
+	padding: 6px 3px;
+	border-style: solid;
+	border-color: #ebebeb;
+	border-width: 0px;
+}
+
+.rowColor1
+{
+	background-color: #FCFFF8;
+	padding: 6px 3px;
+	border-style: solid;
+	border-color: #C9E3A7;
+	border-width: 0px;
+}
+
+.rowColor2
+{
+	background-color: #F6FDED;
+	padding: 6px 3px;
+	border-style: solid;
+	border-color: #C9E3A7;
+	border-width: 0px;
+}
+
+.clearfix:after
+{
+    content: "."; 
+    display: block; 
+    height: 0; 
+    clear: both; 
+    visibility: hidden;
+}
+
+.clearfix
+{
+	display: inline;
+}
+
+/* Hides from IE-mac \*/
+* html .clearfix {height: 1%;}
+.clearfix {display: block;}
+/* End hide from IE-mac */
+
+#copyright
+{
+	padding-top: 6px;
+	text-align: center;
+	margin-bottom: 4px;
+}
+
+
+
+.largeformtext
+{
+	font-size: 14px;
+	color: #444444;
+}
+
+.spaceit
+{
+	margin: 3px 0;
+	padding: 3px 0;
+}
+
+.spaceit_pad
+{
+	padding: 3px 0;
+}
+
+.normal_font
+{
+	font-weight: normal;
+}
+
+div.picSurround img
+{
+	background-color: #ffffff;
+	border: 1px solid #bebebe;
+	padding: 1px;
+	margin: 0px;
+	display: block;
+}
+
+div.membersBar
+{
+	background-color: #708dd3;
+	color: #fff;
+	height: 18px;
+	overflow: hidden;
+	line-height: 18px;
+	padding-left: 3px;
+}
+
+div.updatesBar
+{
+	background-color: #a6bbef;
+	color: #fff;
+	height: 18px;
+	overflow: hidden;
+	line-height: 18px;
+	padding-left: 3px;
+}
+
+.space_table td
+{
+	padding: 2px;
+}
+
+.floatRightHeader
+{
+	float: right;
+	font-weight: normal;
+	font-size: 11px;
+	padding-right: 2px;
+}
+
+.float_right
+{
+	float: right;
+	padding: 0 0 0 3px;
+}
+
+/* add stuff */
+
+.adCenter300 {
+	margin: 7px auto;
+	width: 300px;
+}
+
+.adRight728 {
+	float: right;
+	width: 728px;
+	margin-right: 4px;
+}
+
+.adCenter728 {
+	margin: 7px auto;
+	width: 728px;
+}
+
+.adCenter600 {
+	margin: 7px auto;
+	width: 600px;
+}
+
+/* end ad */
+
+.draggable_list
+{
+	list-style: none;
+	padding: 0;
+}
+
+.draggable_list li
+{
+	padding: 3px;
+	margin: 2px 0;
+}
+
+.draggable_list li:hover
+{
+	padding: 3px;
+	margin: 2px 0;
+	background-color:#ebebeb;
+	cursor: pointer;
+}
+
+.button_add {
+	padding: 1px 2px 1px 2px;
+	background-color: #f6f6f6;
+	border-bottom: 1px solid #ebebeb;
+	font-size: 9px;
+}
+
+.button_add:hover {
+	background-color: #1d439b;
+	color: #ffffff;
+	text-decoration: none;
+}
+
+.button_form {
+	padding: 2px 3px;
+	background-color: #f6f6f6;
+	border-bottom: 1px solid #ebebeb;
+}
+
+.button_form:hover {
+	background-color: #1d439b;
+	color: #ffffff;
+	text-decoration: none;
+}
+
+.button_edit {
+	color: #888888;
+	padding: 1px 2px 1px 2px;
+	background-color: #f6f6f6;
+	border-bottom: 1px solid #ebebeb;
+	font-size: 9px;
+}
+
+.button_edit:hover {
+	background-color: #999999;
+	color: #ffffff;
+	text-decoration: none;
+}
+
+p, .textReadability, span {
+	line-height: 1.5em;
+	margin: 0;
+	padding: 0;
+}
+
+#topSearchText {
+	width: 180px;
+	color: #777777;
+}
+
+.ad230 {
+	position: relative;
+	z-index: 1;
+	width: 230px;
+}
+
+.ad728 {
+	position: absolute;
+	left: 238px;
+	top: 3px;
+	z-index: 0;
+}
+
+.cell_img {
+     width: 53px;
+     float: left;
+}
+
+.cell_desc {
+     width: 450px;
+     float: left;
+     padding: 0 0 0 3px;
+}
+
+.cell_tags {
+     width: 448px;
+     float: left;
+     padding: 0 0 0 3px;
+}
+
+.table_newrow {
+     width: 100%;
+     clear: both;
+     font-size: 5px;
+     line-height: 1.0em;
+}
+
+.table_head {
+     font-size: 11px;
+     line-height: 1.5em;
+}
+
+.eps_file_list {
+	color: #888888;
+	padding: 1px 2px 1px 2px;
+	background-color: #f6f6f6;
+	border-bottom: 1px solid #ebebeb;
+	font-size: 9px;
+}
