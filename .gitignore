@@ -1,2 +1,5 @@
 /maldb.script
 /maldb.properties
+/maldb.lck
+/maldb.tmp
+/maldb.lck

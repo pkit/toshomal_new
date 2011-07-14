@@ -2,7 +2,7 @@
 <JaxcentConfiguration>
     <Page>
         <PagePath>/index.html</PagePath>
-        <PageClass>toshomalFrontend.MainPage</PageClass>
+        <PageClass>toshomal.frontend.MainPage</PageClass>
         <AutoSessionData>true</AutoSessionData>
     </Page>
 </JaxcentConfiguration>
