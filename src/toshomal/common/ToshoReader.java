@@ -8,6 +8,9 @@ import net.socialchange.doctype.Doctype;
 import net.socialchange.doctype.DoctypeChangerStream;
 import net.socialchange.doctype.DoctypeGenerator;
 import net.socialchange.doctype.DoctypeImpl;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -15,6 +18,7 @@ import org.jdom.input.SAXBuilder;
 import org.xml.sax.InputSource;
 
 import toshomal.data.DbShow;
+import toshomal.data.MalEntry;
 import toshomal.data.ParsedFileName;
 import toshomal.data.SearchString;
 
@@ -35,28 +39,28 @@ import static org.apache.commons.codec.binary.Base64.encodeBase64URLSafeString;
 
 public class ToshoReader {
 
-    static String tosho_url;
-    static EmbeddedDBConnector db;
+    private final static String tosho_url = "http://tokyotosho.info/rss.php?filter=1";;
+    private EmbeddedDBConnector db;
     //static PrintWriter out;
-    private static String uname;
-    private static String pass;
+    private String uname;
+    private String pass;
 
     public ToshoReader()
     {
-        tosho_url = "http://tokyotosho.info/rss.php?filter=1";
         db = new EmbeddedDBConnector();
-        uname = "";
-        pass = "";
-    }
-
-    public static void setCredentials()
-    {
         String[] creds = db.getCredentials();
         uname = creds[0];
         pass = creds[1];
     }
 
-    public static InputSource Geturl (String URL, String Name, String Password)
+//    public static void setCredentials()
+//    {
+//        String[] creds = db.getCredentials();
+//        uname = creds[0];
+//        pass = creds[1];
+//    }
+
+    private String getUrl (String URL)
     {
         InputStream content = null;
         URL u;
@@ -66,9 +70,9 @@ public class ToshoReader {
             u = new URL(URL);
             try {
                 uc = u.openConnection();
-                if (Name != null)
+                if (uname != null)
                 {
-                    uc.setRequestProperty("Authorization", String.format("Basic %s", encodeBase64URLSafeString((Name + ":" + Password).getBytes())));
+                    uc.setRequestProperty("Authorization", String.format("Basic %s", encodeBase64URLSafeString((uname + ":" + pass).getBytes())));
                 }
                 content = uc.getInputStream();
                 BufferedInputStream in = new BufferedInputStream(content);
@@ -82,51 +86,60 @@ public class ToshoReader {
             e.printStackTrace();
             System.out.println(URL + " is not a parseable URL");
         }
-        DoctypeChangerStream changer = new DoctypeChangerStream(content);
-        changer.setGenerator(
-                new DoctypeGenerator()
-                {
-                    public Doctype generate(Doctype old) {
-                        return new DoctypeImpl(null,
-                                "-//W3C//DTD XHTML 1.0 Transitional//EN",
-                                "xhtml1-transitional.dtd",
-                                null);
-                    }
-                }
-        );
-
-        InputSource src = new InputSource(changer);
-        src.setEncoding("iso-8859-1");
-        return src;
+//        DoctypeChangerStream changer = new DoctypeChangerStream(content);
+//        changer.setGenerator(
+//                new DoctypeGenerator()
+//                {
+//                    public Doctype generate(Doctype old) {
+//                        return new DoctypeImpl(null,
+//                                "-//W3C//DTD XHTML 1.0 Transitional//EN",
+//                                "xhtml1-transitional.dtd",
+//                                null);
+//                    }
+//                }
+//        );
+//
+//        InputSource src = new InputSource(changer);
+//        src.setEncoding("iso-8859-1");
+//        return src;
+        try {
+			return IOUtils.toString(content, "UTF-8");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
     }
 
-    public static Element GetShowDetails(InputSource input, String showTitle, int LVdist)
+    private MalEntry getShowDetails(String input, String showTitle, int LVdist)
     {
         try {
             Pattern p_synsplit = Pattern.compile("\\s*;\\s*");
-            SAXBuilder builder = new SAXBuilder();
-            Document maldoc = builder.build(input);
-            Element root = maldoc.getRootElement();
-            List listOfEntries = root.getChildren("entry");
-            Iterator i = listOfEntries.iterator();
-            Element best_entry = null;
-            while (i.hasNext())
+            //SAXBuilder builder = new SAXBuilder();
+            //Document maldoc = builder.build(new StringReader(StringEscapeUtils.unescapeHtml(input)));
+            //Element root = maldoc.getRootElement();
+            //List listOfEntries = root.getChildren("entry");
+            //Iterator i = listOfEntries.iterator();
+            List<MalEntry> listOfEntries = MalEntry.parseFromString(input);
+            MalEntry best_entry = null;
+            for (MalEntry mal_entry : listOfEntries)
+            //while (i.hasNext())
             {
-                Element mal_entry = (Element)i.next();
-                Element mal_stat = mal_entry.getChild("status");
-                Element mal_title = mal_entry.getChild("title");
-                int lv = StringUtils.getLevenshteinDistance(showTitle, mal_title.getTextTrim());
+                //Element mal_entry = (Element)i.next();
+            	//Element mal_entry = (Element) e;
+                //Element mal_stat = mal_entry.getChild("status");
+                String mal_title = mal_entry.get("title");
+                int lv = StringUtils.getLevenshteinDistance(showTitle, mal_title);
                 if (lv < LVdist)
                 {
                     LVdist = lv;
                     best_entry = mal_entry;
                 }
-                Element mal_syn = mal_entry.getChild("synonyms");
+                String mal_syn = mal_entry.get("synonyms");
                 //System.out.println("MAL Title: " + mal_title.getTextTrim());
                 //System.out.println("MAL Status: " + mal_stat.getTextTrim());
-                if (mal_syn.getTextTrim() != null && mal_syn.getTextTrim().length() > 0)
+                if (mal_syn != null && mal_syn.length() > 0)
                 {
-                    String[] mal_synonyms = p_synsplit.split(mal_syn.getTextTrim());
+                    String[] mal_synonyms = p_synsplit.split(mal_syn);
                     for (String mal_synonym : mal_synonyms) {
                         lv = StringUtils.getLevenshteinDistance(showTitle, mal_synonym);
                         if (lv < LVdist) {
@@ -138,34 +151,35 @@ public class ToshoReader {
             }
             return best_entry;
         } catch (Exception ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+        	ex.printStackTrace();
+            //System.out.println("ERROR: " + ex.getMessage());
             return null;
         }
     }
 
-    public static void PrintEntry(PrintWriter out, Element entry, SyndEntry t_entry) {
-        try {
-            Matcher m_thumb = Pattern.compile("\\.jpg$").matcher(entry.getChild("image").getTextTrim());
-            Pattern p_synsplit = Pattern.compile("\\s*;\\s*");
-            out.println("<tr><td valign=\"top\" width=\"55\"><div class=\"picSurround\">");
-            out.println("<img src=\"" + m_thumb.replaceFirst("t.jpg") + "\" border=\"0\">");
-            out.println("</div></td><td valign=\"top\" class=\"borderClass\">");
-            out.println("<div><strong>" + entry.getChild("title").getTextTrim() + "</strong></div>");
-            if (entry.getChild("synonyms").getTextTrim() != null && entry.getChild("synonyms").getTextTrim().length() > 0)
-            {
-                String[] mal_synonyms = p_synsplit.split(entry.getChild("synonyms").getTextTrim());
-                for (String mal_synonym : mal_synonyms) {
-                    out.println("<div><i>" + mal_synonym + "</i></div>");
-                }
-            }
-            out.println("<div><a href=\"" + t_entry.getLink() + "\">" + t_entry.getTitle() + "</a></div>");
-            out.println("<div>&nbsp;</div></td></tr>");
-        } catch (Exception ex) {
-            System.out.println("ERROR: " + ex.getMessage());
-        }
-    }
+//    private void PrintEntry(PrintWriter out, Element entry, SyndEntry t_entry) {
+//        try {
+//            Matcher m_thumb = Pattern.compile("\\.jpg$").matcher(entry.getChild("image").getTextTrim());
+//            Pattern p_synsplit = Pattern.compile("\\s*;\\s*");
+//            out.println("<tr><td valign=\"top\" width=\"55\"><div class=\"picSurround\">");
+//            out.println("<img src=\"" + m_thumb.replaceFirst("t.jpg") + "\" border=\"0\">");
+//            out.println("</div></td><td valign=\"top\" class=\"borderClass\">");
+//            out.println("<div><strong>" + entry.getChild("title").getTextTrim() + "</strong></div>");
+//            if (entry.getChild("synonyms").getTextTrim() != null && entry.getChild("synonyms").getTextTrim().length() > 0)
+//            {
+//                String[] mal_synonyms = p_synsplit.split(entry.getChild("synonyms").getTextTrim());
+//                for (String mal_synonym : mal_synonyms) {
+//                    out.println("<div><i>" + mal_synonym + "</i></div>");
+//                }
+//            }
+//            out.println("<div><a href=\"" + t_entry.getLink() + "\">" + t_entry.getTitle() + "</a></div>");
+//            out.println("<div>&nbsp;</div></td></tr>");
+//        } catch (Exception ex) {
+//            System.out.println("ERROR: " + ex.getMessage());
+//        }
+//    }
 
-    public static ParsedFileName parseFileEntry(String file)
+    private static ParsedFileName parseFileEntry(String file)
     {
         Matcher m_stag = Pattern.compile("^[_ ]*[\\[\\(]([^\\]\\)]+)[\\]\\)][_ ]*").matcher("");
         Matcher m_etag = Pattern.compile("[_ ]*[\\[\\(]([^\\]\\)]+)[\\]\\)][_ ]*").matcher("");
@@ -239,11 +253,11 @@ public class ToshoReader {
         return new ParsedFileName(file, eps, sub, ver, ext, md5, tags, search);
     }
 
-    public static boolean getToshoContent()
+    public boolean getToshoContent()
     {
         Date lastUpdate = db.getLatestUpdate();
         boolean result = false;
-        setCredentials();
+        //setCredentials();
         try {
             URL feedUrl = new URL(tosho_url);
             InputStream rcvData = null;
@@ -283,45 +297,46 @@ public class ToshoReader {
                 title = m_200b.replaceAll("");
                 ParsedFileName fname = parseFileEntry(title);
                 SearchString full_title = new SearchString(fname.getSearch());
-                InputSource ins = null;
+                //InputSource ins = null;
+                String content = null;
                 String search = full_title.getFirst();
                 System.out.println("Search string: " + search);
-                ins = Geturl("http://myanimelist.net/api/anime/search.xml?q=" + URLEncoder.encode(search,"utf-8"), uname, pass);
-                Element best_entry = null;
+                content = getUrl("http://myanimelist.net/api/anime/search.xml?q=" + URLEncoder.encode(search,"utf-8"));
+                MalEntry best_entry = null;
                 int lvdist = 500;
-                while (ins != null)
+                while (content != null)
                 {
-                    best_entry = GetShowDetails(ins, fname.getSearch(),lvdist);
+                    best_entry = getShowDetails(content, fname.getSearch(),lvdist);
                     if (best_entry != null)
-                        System.out.println("MAL best match: " + best_entry.getChild("title").getTextTrim());
+                        System.out.println("MAL best match: " + best_entry.get("title"));
                     String part = full_title.getLeft();
                     if (search.compareTo(part) == 0)
                         break;
                     search = part;
                     System.out.println("Search string: " + search);
-                    ins = Geturl("http://myanimelist.net/api/anime/search.xml?q=" + URLEncoder.encode(search,"utf-8"), uname, pass);
+                    content = getUrl("http://myanimelist.net/api/anime/search.xml?q=" + URLEncoder.encode(search,"utf-8"));
                 }
                 if (search.compareTo(full_title.getRight()) != 0)
                 {
                     search = full_title.getRight();
                     System.out.println("Search string: " + search);
-                    ins = Geturl("http://myanimelist.net/api/anime/search.xml?q=" + URLEncoder.encode(search,"utf-8"), uname, pass);
-                    while (ins != null)
+                    content = getUrl("http://myanimelist.net/api/anime/search.xml?q=" + URLEncoder.encode(search,"utf-8"));
+                    while (content != null)
                     {
-                        best_entry = GetShowDetails(ins, fname.getSearch(),lvdist);
+                        best_entry = getShowDetails(content, fname.getSearch(),lvdist);
                         if (best_entry != null)
-                            System.out.println("MAL best match: " + best_entry.getChild("title").getTextTrim());
+                            System.out.println("MAL best match: " + best_entry.get("title"));
                         String part = full_title.getRight();
                         if (search.compareTo(part) == 0)
                             break;
                         search = part;
                         System.out.println("Search string: " + search);
-                        ins = Geturl("http://myanimelist.net/api/anime/search.xml?q=" + URLEncoder.encode(search,"utf-8"), uname, pass);
+                        content = getUrl("http://myanimelist.net/api/anime/search.xml?q=" + URLEncoder.encode(search,"utf-8"));
                     }
                 }
                 if (best_entry != null)
                 {
-                    System.out.println("FINAL MAL best match: " + best_entry.getChild("title").getTextTrim());
+                    System.out.println("FINAL MAL best match: " + best_entry.get("title"));
                     //PrintEntry(out, best_entry, entry);
                     db.UpdateEntry(best_entry, entry, fname);
                 }
@@ -331,29 +346,29 @@ public class ToshoReader {
             //out.close();
         }   catch (Exception ex) {
             ex.printStackTrace();
-            System.out.println("ERROR: "+ex.getMessage());
+            //System.out.println("ERROR: "+ex.getMessage());
         }
         return result;
     }
 
-    public static DbShow searchForShow(String search)
+    public DbShow searchForShow(String search)
     {
         DbShow show = null;
         try {
-            InputSource ins = Geturl("http://myanimelist.net/api/anime/search.xml?q=" + URLEncoder.encode(search,"utf-8"), uname, pass);
-            if(ins != null)
+            String content = getUrl("http://myanimelist.net/api/anime/search.xml?q=" + URLEncoder.encode(search,"utf-8"));
+            if(content != null)
             {
-                Element result = GetShowDetails(ins, search ,500);
+                MalEntry result = getShowDetails(content, search ,500);
                 if (result != null)
                 {
-                    Matcher m_thumb = Pattern.compile("\\.jpg$").matcher(result.getChild("image").getTextTrim());
+                    Matcher m_thumb = Pattern.compile("\\.jpg$").matcher(result.get("image"));
                     String image = m_thumb.replaceFirst("t.jpg");
                     show = new DbShow(-1,
-                            result.getChild("title").getTextTrim(),
-                            Integer.parseInt(result.getChild("id").getTextTrim()),
-                            result.getChild("status").getTextTrim(),
-                            result.getChild("type").getTextTrim(),
-                            Integer.parseInt(result.getChild("episodes").getTextTrim()),
+                            result.get("title"),
+                            Integer.parseInt(result.get("id")),
+                            result.get("status"),
+                            result.get("type"),
+                            Integer.parseInt(result.get("episodes")),
                             image);
                 }
             }

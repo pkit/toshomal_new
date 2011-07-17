@@ -4,17 +4,18 @@ import jaxcent.*;
 import org.xml.sax.InputSource;
 
 import toshomal.common.EmbeddedDBConnector;
+import toshomal.common.ToshoReader;
 import toshomal.data.DbShow;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static toshomal.common.ToshoReader.searchForShow;
-
 public class ShowEditorDiv extends HtmlDiv
 {
     private JaxcentPage tpage;
     private DbShow show;
+    private ToshoReader reader;
+    
     private static final String[] statusList =
             {
                     "Select status",
@@ -37,6 +38,7 @@ public class ShowEditorDiv extends HtmlDiv
         super(page, searchType, text, attributes, values);
         this.tpage = page;
         this.show = show;
+        this.reader = new ToshoReader();
 
         HtmlForm form = new HtmlForm(tpage, SearchType.createNew,
                 new String[] { "method", "name", "id" },
@@ -219,7 +221,7 @@ public class ShowEditorDiv extends HtmlDiv
                         return;
                     try {
                         this.setDisabled(true);
-                        DbShow show = searchForShow((String) pageData.get("show_search"));
+                        DbShow show = reader.searchForShow((String) pageData.get("show_search"));
                         if (show == null)
                         {
                             tpage.showMessageDialog("Your search for \"" + pageData.get("show_search") + "\" did not return any results...");

@@ -7,6 +7,7 @@ import toshomal.data.DbEps;
 import toshomal.data.DbFile;
 import toshomal.data.DbShow;
 import toshomal.data.DbTag;
+import toshomal.data.MalEntry;
 import toshomal.data.ParsedFileName;
 
 import java.sql.*;
@@ -290,18 +291,18 @@ public class EmbeddedDBConnector
         this.closeStatement(stmt);
     }
 
-    public void UpdateEntry(Element entry, SyndEntry t_entry, ParsedFileName fname) {
+    public void UpdateEntry(MalEntry entry, SyndEntry t_entry, ParsedFileName fname) {
         try {
-            Matcher m_thumb = Pattern.compile("\\.jpg$").matcher(entry.getChild("image").getTextTrim());
+            Matcher m_thumb = Pattern.compile("\\.jpg$").matcher(entry.get("image"));
             String image = m_thumb.replaceFirst("t.jpg");
-            int show_id = getShowId(entry.getChild("title").getTextTrim());
+            int show_id = getShowId(entry.get("title"));
             if (show_id == -1)
             {
-                show_id = insertNewShow(entry.getChild("title").getTextTrim(),
-                        entry.getChild("id").getTextTrim(),
-                        entry.getChild("episodes").getTextTrim(),
-                        entry.getChild("type").getTextTrim(),
-                        entry.getChild("status").getTextTrim(),
+                show_id = insertNewShow(entry.get("title"),
+                        entry.get("id"),
+                        entry.get("episodes"),
+                        entry.get("type"),
+                        entry.get("status"),
                         image);
             }
             int file_id = getFileId(t_entry.getLink());

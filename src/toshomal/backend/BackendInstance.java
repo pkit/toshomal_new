@@ -7,8 +7,6 @@ import java.util.Date;
 
 import jaxcentServer.ServerMain;
 
-import static toshomal.common.ToshoReader.getToshoContent;
-
 public class BackendInstance extends Thread {
 
     String logline;
@@ -34,7 +32,7 @@ public class BackendInstance extends Thread {
             long maxSleep = sleepTime << 6;
             while(bRun)
             {
-                if(getToshoContent())
+                if(reader.getToshoContent())
                     sleep = sleepTime;
                 System.out.println(String.format("Sleeping %d seconds...", sleep / 1000));
                 sleep(sleep);

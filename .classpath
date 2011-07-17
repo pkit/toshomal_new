@@ -11,5 +11,6 @@
 	<classpathentry kind="lib" path="lib/jaxcentFramework21.jar"/>
 	<classpathentry kind="lib" path="lib/servlet-api.jar"/>
 	<classpathentry kind="lib" path="lib/hsqldb.jar"/>
+	<classpathentry kind="lib" path="lib/commons-io-2.0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
