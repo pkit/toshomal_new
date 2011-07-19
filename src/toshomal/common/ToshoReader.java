@@ -120,6 +120,9 @@ public class ToshoReader {
             //List listOfEntries = root.getChildren("entry");
             //Iterator i = listOfEntries.iterator();
             List<MalEntry> listOfEntries = MalEntry.parseFromString(input);
+            if (listOfEntries == null) {
+            	return null;
+            }
             MalEntry best_entry = null;
             for (MalEntry mal_entry : listOfEntries)
             //while (i.hasNext())

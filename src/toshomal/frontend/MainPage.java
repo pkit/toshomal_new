@@ -268,7 +268,7 @@ public class MainPage extends JaxcentPage {
             }
             if(last != null && last.getNum() < show.getEpsNum())
             {
-                new HtmlItalic(this, SearchType.createNew, String.format(" ··· %d", show.getEpsNum()),
+                new HtmlItalic(this, SearchType.createNew, String.format(" ... %d", show.getEpsNum()),
                         new String[] { },
                         new String[] { }
                 ).insertAtEnd(result);

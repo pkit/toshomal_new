@@ -43,14 +43,19 @@ public class MalEntry {
 //	}
 	
 	public static List<MalEntry> parseFromString(String content) {
+		
+		if(! content.startsWith("<?xml")){
+			return null;
+		}
 		List<MalEntry> result = new ArrayList<MalEntry>();
 		Pattern p1 = Pattern.compile(".*<anime>", Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
 		Matcher m1 = p1.matcher(content);
 		content = m1.replaceFirst("");
 		
-		p1 = Pattern.compile("<entry>", Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
+		System.out.println("Content: \n" + content);
+		p1 = Pattern.compile("<entry>", Pattern.DOTALL | Pattern.CASE_INSENSITIVE | Pattern.LITERAL);
 		m1 = p1.matcher(content);
-		Pattern p2 = Pattern.compile("</entry>", Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
+		Pattern p2 = Pattern.compile("</entry>", Pattern.DOTALL | Pattern.CASE_INSENSITIVE | Pattern.LITERAL);
 		Matcher m2 = p2.matcher(content);
 		while (m1.find()) {
 			int entryStart = m1.end();
@@ -67,8 +72,8 @@ public class MalEntry {
 			for (String tag : tags) {
 				p1 = Pattern.compile("<" + tag + ">\\s*(.*)\\s*</" + tag + ">", Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
 				m1 = p1.matcher(entry);
-				if (m1.lookingAt()) {
-					String g = m1.group();
+				if (m1.find()) {
+					String g = m1.group(1);
 					g = StringEscapeUtils.unescapeHtml(g);
 					malEntry.put(tag, g);
 				}
